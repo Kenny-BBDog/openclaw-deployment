@@ -52,59 +52,67 @@ prompt_choice() {
 }
 
 # 如果没有预设任何 KEY，则进入详细配置向导
-if [ -z "$GEMINI_API_KEY" ] && [ -z "$MINIMAX_API_KEY" ] && [ -z "$OPENAI_API_KEY" ] && [ -z "$ANTHROPIC_API_KEY" ] && [ -z "$DEEPSEEK_API_KEY" ]; then
-    echo "NO.1 [模型配置] 请选择您的主模型提供商 (输入数字):"
+if [ -z "$GEMINI_API_KEY" ] && [ -z "$MINIMAX_API_KEY" ] && [ -z "$OPENAI_API_KEY" ] && [ -z "$ANTHROPIC_API_KEY" ] && [ -z "$DEEPSEEK_API_KEY" ] && [ -z "$MOONSHOT_API_KEY" ] && [ -z "$ZAI_API_KEY" ]; then
+    echo "NO.1 [模型配置] 请选择您的主模型提供商:"
+    echo "1) Anthropic(Claude)"
+    echo "2) OpenAI(GPT)"
+    echo "3) DeepSeek(深度求索)"
+    echo "4) MiniMax"
+    echo "5) Moonshot(Kimi)"
+    echo "6) Z.AI(智谱GLM)"
+    echo "7) Google(Gemini)"
+    echo "8) Ollama(本地)"
+    echo "9) Custom(自定义)"
     
-    PROVIDERS="Anthropic(Claude) OpenAI(GPT) DeepSeek(深度求索) MiniMax Moonshot(Kimi) Z.AI(智谱GLM) Google(Gemini) Ollama(本地) Custom(自定义)"
-    
-    select PROV in $PROVIDERS; do
-        case "$PROV" in
-            "Anthropic(Claude)")
+    while true; do
+        read -p "请输入数字 (1-9): " PROV_NUM < /dev/tty
+        case "$PROV_NUM" in
+            1)
                 export MODEL_PROVIDER="anthropic"
-                read -p "  > Anthropic API Key (sk-ant-...): " ANTHROPIC_API_KEY
+                read -p "  > Anthropic API Key: " ANTHROPIC_API_KEY < /dev/tty
                 export ANTHROPIC_API_KEY
                 break ;;
-            "OpenAI(GPT)")
+            2)
                 export MODEL_PROVIDER="openai"
-                read -p "  > OpenAI API Key (sk-...): " OPENAI_API_KEY
+                read -p "  > OpenAI API Key: " OPENAI_API_KEY < /dev/tty
                 export OPENAI_API_KEY
                 break ;;
-            "DeepSeek(深度求索)")
+            3)
                 export MODEL_PROVIDER="deepseek"
-                read -p "  > DeepSeek API Key (sk-...): " DEEPSEEK_API_KEY
+                read -p "  > DeepSeek API Key: " DEEPSEEK_API_KEY < /dev/tty
                 export DEEPSEEK_API_KEY
                 break ;;
-            "MiniMax")
+            4)
                 export MODEL_PROVIDER="minimax"
-                read -p "  > MiniMax API Key: " MINIMAX_API_KEY
+                read -p "  > MiniMax API Key: " MINIMAX_API_KEY < /dev/tty
                 export MINIMAX_API_KEY
                 break ;;
-            "Moonshot(Kimi)")
+            5)
                 export MODEL_PROVIDER="moonshot"
-                read -p "  > Moonshot API Key: " MOONSHOT_API_KEY
+                read -p "  > Moonshot API Key: " MOONSHOT_API_KEY < /dev/tty
                 export MOONSHOT_API_KEY
                 break ;;
-            "Z.AI(智谱GLM)")
+            6)
                 export MODEL_PROVIDER="zai"
-                read -p "  > Z.AI/GLM API Key: " ZAI_API_KEY
+                read -p "  > Z.AI/GLM API Key: " ZAI_API_KEY < /dev/tty
                 export ZAI_API_KEY
                 break ;;
-            "Google(Gemini)")
+            7)
                 export MODEL_PROVIDER="google"
-                read -p "  > Google Gemini API Key: " GEMINI_API_KEY
+                read -p "  > Google Gemini API Key: " GEMINI_API_KEY < /dev/tty
                 export GEMINI_API_KEY
                 break ;;
-            "Ollama(本地)")
+            8)
                 export MODEL_PROVIDER="ollama"
-                read -p "  > Ollama URL (默认 http://localhost:11434): " OLLAMA_URL
+                read -p "  > Ollama URL (默认 http://localhost:11434): " OLLAMA_URL < /dev/tty
                 export OLLAMA_URL="${OLLAMA_URL:-http://localhost:11434}"
                 break ;; 
-            "Custom(自定义)")
+            9)
                 export MODEL_PROVIDER="custom"
-                read -p "  > Base URL (如 https://api.xxx.com/v1): " CUSTOM_BASE_URL
-                read -p "  > API Key: " CUSTOM_API_KEY
+                read -p "  > Base URL: " CUSTOM_BASE_URL < /dev/tty
+                read -p "  > API Key: " CUSTOM_API_KEY < /dev/tty
                 break ;;
-            *) echo "无效选择";;
+            *) echo "无效选择，请输入 1-9";;
         esac
     done
     echo ""
@@ -116,12 +124,12 @@ if [ -z "$ENABLE_FEISHU" ] && [ -z "$ENABLE_WECOM" ]; then
     echo "NO.2 [社交软件接入] 是否需要配置国内社交平台?"
     
     if [ -z "$ENABLE_FEISHU" ]; then
-        read -p "  > 是否安装飞书 (Feishu) 插件? [y/N]: " INSTALL_FEISHU
+        read -p "  > 是否安装飞书 (Feishu) 插件? [y/N]: " INSTALL_FEISHU < /dev/tty
         [[ "$INSTALL_FEISHU" =~ ^[Yy]$ ]] && export ENABLE_FEISHU="true"
     fi
 
     if [ -z "$ENABLE_WECOM" ]; then
-        read -p "  > 是否安装企业微信 (WeCom) 插件? [y/N]: " INSTALL_WECOM
+        read -p "  > 是否安装企业微信 (WeCom) 插件? [y/N]: " INSTALL_WECOM < /dev/tty
         [[ "$INSTALL_WECOM" =~ ^[Yy]$ ]] && export ENABLE_WECOM="true"
     fi
     echo ""
@@ -130,7 +138,7 @@ fi
 # --- 3. Advanced Skills ---
 if [ -z "$ENABLE_SPECKIT" ]; then
     echo "NO.3 [高阶技能] 是否安装以下进阶技能?"
-    read -p "  > 是否安装 SpecKit (规范驱动开发)? [y/N]: " INSTALL_SPECKIT
+    read -p "  > 是否安装 SpecKit (规范驱动开发)? [y/N]: " INSTALL_SPECKIT < /dev/tty
     [[ "$INSTALL_SPECKIT" =~ ^[Yy]$ ]] && export ENABLE_SPECKIT="true"
     echo ""
 fi
@@ -138,12 +146,12 @@ fi
 # --- 4. SMTP Email Configuration ---
 if [ -z "$ENABLE_SMTP" ]; then
     echo "NO.4 [邮件通知] 配置 SMTP 以便 AI 发送通知 (如 Gmail, Outlook, 企业邮)?"
-    read -p "  > 是否配置 SMTP? [y/N]: " SETUP_SMTP
+    read -p "  > 是否配置 SMTP? [y/N]: " SETUP_SMTP < /dev/tty
     if [[ "$SETUP_SMTP" =~ ^[Yy]$ ]]; then
-        read -p "    - SMTP 服务器 (如 smtp.gmail.com): " SMTP_HOST
-        read -p "    - SMTP 端口 (如 587/465): " SMTP_PORT
-        read -p "    - 发件人邮箱: " SMTP_USER
-        read -p "    - 邮箱密码/授权码: " SMTP_PASS
+        read -p "    - SMTP 服务器: " SMTP_HOST < /dev/tty
+        read -p "    - SMTP 端口: " SMTP_PORT < /dev/tty
+        read -p "    - 发件人邮箱: " SMTP_USER < /dev/tty
+        read -p "    - 邮箱密码/授权码: " SMTP_PASS < /dev/tty
         export ENABLE_SMTP="true"
         export SMTP_HOST SMTP_PORT SMTP_USER SMTP_PASS
     fi

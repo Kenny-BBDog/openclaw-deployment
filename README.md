@@ -24,7 +24,11 @@
 ### 方式一：一行命令安装 (推荐)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Kenny-BBDog/openclaw-deployment/main/mass_deploy.sh | bash
+# 官方 GitHub 源 (海外服务器)
+bash <(curl -fsSL https://raw.githubusercontent.com/Kenny-BBDog/openclaw-deployment/main/mass_deploy.sh)
+
+# 国内加速源 (国内服务器推荐)
+bash <(curl -fsSL https://ghproxy.net/https://raw.githubusercontent.com/Kenny-BBDog/openclaw-deployment/main/mass_deploy.sh)
 ```
 
 脚本会交互式询问您的模型 Key，然后自动完成安装。
@@ -224,5 +228,5 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 ## 🙏 致谢
 
-- [OpenClaw](https://github.com/openclaw-ai/openclaw) - 开源 AI 助手
-- [青辰云](https://github.com/qingchencloud) - 汉化版维护者
+- [OpenClaw](https://github.com/openclaw-ai/openclaw) - 强大的开源 AI 助手核心
+- [Kenny-BBDog](https://github.com/Kenny-BBDog) - 本自动化部署套件维护者
